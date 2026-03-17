@@ -5,21 +5,21 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 require __DIR__ . '/vendor/autoload.php';
-require __DIR__ . '/controllers/AlunniController.php';
+require __DIR__ . '/controllers/TransazioniController.php';
 
 $app = AppFactory::create();
 
-$app->get('/test', function (Request $request, Response $response, array $args) {
-    $response->getBody()->write("Test page");
-    return $response;
-});
+$app->get('/accounts/{idA}/transactions', "TransazioniController:index");
+$app->get('/accounts/{idA}/transactions/{idT}', "TransazioniController:show");
+$app->post('/accounts/{idA}/deposits', "AlunniController:index");
+$app->post('/accounts/{idA}/withdrawals', "AlunniController:index");
+$app->put('/accounts/{idA}/transactions/{idT}', "AlunniController:index");
+$app->delete('/accounts/{idA}/transactions/{idT}', "AlunniController:index");
 
-$app->get('/hello/{name}', function (Request $request, Response $response, array $args) {
-    $name = $args['name'];
-    $response->getBody()->write("Hello, $name");
-    return $response;
-});
+$app->get('/accounts/{idA}/balance', "AlunniController:index");
 
-$app->get('/alunni', "AlunniController:index");
+$app->get('/accounts/{idA}/balance/convert/fiat?to=USD', "AlunniController:index");
+$app->get('/accounts/{idA}/balance/convert/crypto?to=BTC', "AlunniController:index");
 
 $app->run();
+?>
